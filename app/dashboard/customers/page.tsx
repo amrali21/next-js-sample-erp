@@ -1,4 +1,4 @@
-import { fetchCustomers } from '@/app/lib/data';
+import { fetchCustomerPages, fetchCustomers, fetchFilteredCustomers } from '@/app/lib/data';
 import CustomersTable from '@/app/ui/customers/table';
 import { lusitana } from '@/app/ui/fonts';
 import Pagination from '@/app/ui/invoices/pagination';
@@ -16,12 +16,10 @@ export default async function Page({
 }) {
 
     const query = searchParams?.query || '';
-    // 
-    // const query = searchParams?.query || '';
-    // const currentPage = Number(searchParams?.page) || 1;
+    const currentPage = Number(searchParams?.page) || 1;
 
-    const customers = await fetchCustomers();
-    console.log('customers: ' + customers)
+    const totalPages = await fetchCustomerPages(query);
+
     return (
         <div className="w-full">
             <div className="flex w-full items-center justify-between">
@@ -31,16 +29,12 @@ export default async function Page({
                 <Search placeholder="Search customers..." />
             </div>
 
-            <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-                {/* <Search placeholder="Search invoices..." /> */}
-                {/* <CreateInvoice /> */}
-            </div>
             <Suspense fallback={<InvoicesTableSkeleton />}>
-                <CustomersTable query={query} customers={customers} />
+                <CustomersTable currentPage={currentPage} query={query} />
             </Suspense>
-            {/* <div className="mt-5 flex w-full justify-center">
+            <div className="mt-5 flex w-full justify-center">
                 <Pagination totalPages={totalPages} />
-            </div> */}
+            </div>
         </div>
     );
 }

@@ -5,15 +5,16 @@ import {
   CustomersTableType,
   FormattedCustomersTable,
 } from '@/app/lib/definitions';
+import { fetchFilteredCustomers } from '@/app/lib/data';
+import { DeleteCustomer, UpdateCustomer } from './buttons';
 
 export default async function CustomersTable({
-  query:
-  customers,
-}: {
-  query: string;
-  customers: FormattedCustomersTable[];
-}) {
-  console.log(customers)
+  query, currentPage
+}: { query: string; currentPage: number }
+) {
+
+  const customers: CustomersTableType[] = await fetchFilteredCustomers(query, currentPage);
+
   return (
     <div className="w-full">
       <div className="mt-6 flow-root">
@@ -57,6 +58,9 @@ export default async function CustomersTable({
                     <th scope="col" className="px-3 py-5 font-medium">
                       Email
                     </th>
+                    <th scope="col" className="relative py-3 pl-6 pr-3">
+                      <span className="sr-only">Edit</span>
+                    </th>
                   </tr>
                 </thead>
 
@@ -77,6 +81,12 @@ export default async function CustomersTable({
                       </td>
                       <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
                         {customer.email}
+                      </td>
+                      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                        <div className="flex justify-end gap-3">
+                          <UpdateCustomer id={customer.id} />
+                          <DeleteCustomer id={customer.id} />
+                        </div>
                       </td>
                     </tr>
                   ))}
