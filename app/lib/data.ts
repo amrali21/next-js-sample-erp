@@ -166,7 +166,10 @@ export async function fetchCustomers() {
 
     const res = await axios.get('Next/fetchCustomers')
 
+
     const customers = res.data;
+
+    console.log('data from api: ' + JSON.stringify(customers))
     return customers;
 
   } catch (err) {
