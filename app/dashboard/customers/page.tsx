@@ -1,4 +1,4 @@
-import { fetchCustomerPages, fetchCustomers, fetchFilteredCustomers } from '@/app/lib/data';
+import { fetchCustomerPages } from '@/app/lib/data';
 import CustomersTable from '@/app/ui/customers/table';
 import { lusitana } from '@/app/ui/fonts';
 import Pagination from '@/app/ui/invoices/pagination';
@@ -18,7 +18,7 @@ export default async function Page({
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
 
-    const totalPages = await fetchCustomerPages(query);
+    const totalPages: number = await fetchCustomerPages(query);
 
     return (
         <div className="w-full">

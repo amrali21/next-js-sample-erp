@@ -1,15 +1,12 @@
 'use client';
 
-import { CustomerField, CustomersTableType, InvoiceForm } from '@/app/lib/definitions';
+import { CustomersTableType } from '@/app/lib/definitions';
 import {
-  CheckIcon,
-  ClockIcon,
   CurrencyDollarIcon,
-  UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
-import { updateCustomer, updateInvoice } from '@/app/lib/actions';
+import { updateCustomer } from '@/app/lib/actions';
 
 export default function EditCustomerForm({
   customer,
@@ -57,7 +54,6 @@ export default function EditCustomerForm({
           </div>
         </div>
 
-        {/* Invoice Status */}
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link

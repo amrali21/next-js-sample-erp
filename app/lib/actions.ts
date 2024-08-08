@@ -13,7 +13,6 @@ const InvoiceFormSchema = z.object({
     date: z.string(),
 });
 
-
 const CreateInvoice = InvoiceFormSchema.omit({ id: true, date: true });
 
 export async function createInvoice(formData: FormData) {
@@ -25,20 +24,14 @@ export async function createInvoice(formData: FormData) {
     const amountInCents = amount * 100;
     const date = new Date().toISOString().split('T')[0];
 
-
-    // Test it out:
-    // insert into db here
     try {
-        const res = await axios.post('Next/insertInvoice', { customerId, amount: amountInCents, status, date });
-        console.log('inserted successfully');
+        await axios.post('Next/insertInvoice', { customerId, amount: amountInCents, status, date });
     } catch (error) {
-        console.error('Database Error:', error);
         throw new Error('Failed to insert invoice.');
     }
 
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
-
 }
 
 const UpdateInvoice = InvoiceFormSchema.omit({ id: true, date: true });
@@ -52,15 +45,10 @@ export async function updateInvoice(id: string, formData: FormData) {
 
     const amountInCents = amount * 100;
 
-    // Test it out:
-    // update db here
-
     try {
-        const res = await axios.put('Next/updateInvoice', {}/*, { id, customerId, amount: amountInCents, status }*/);
+        const res = await axios.put('Next/updateInvoice', { id, customerId, amount: amountInCents, status });
         console.log('updated successfully');
     } catch (error: any) {
-        console.log('error: ' + error.message)
-        //console.error('Database Error:', error);
         throw new Error('Failed to update invoice.');
     }
 
@@ -69,13 +57,9 @@ export async function updateInvoice(id: string, formData: FormData) {
 }
 
 export async function deleteInvoice(id: string) {
-
     try {
-        const res = await axios.delete(`Next/deleteInvoice/${id}`);
-        console.log('deleted successfully');
+        await axios.delete(`Next/deleteInvoice/${id}`);
     } catch (error: any) {
-        console.log('error: ' + error.message)
-        //console.error('Database Error:', error);
         throw new Error('Failed to delete invoice.');
     } revalidatePath('/dashboard/invoices');
 }
@@ -94,15 +78,9 @@ export async function updateCustomer(id: string, formData: FormData) {
         email: formData.get('email'),
     });
 
-    // Test it out:
-    // update db here
-
     try {
-        const res = await axios.put('Next/updateCustomer'/*, { id: id, name: name, email: email}*/);
-        console.log('updated successfully');
+        await axios.put('Next/updateCustomer', { id, name, email }/*, { id: id, name: name, email: email}*/);
     } catch (error: any) {
-        console.log('error: ' + error.message)
-        //console.error('Database Error:', error);
         throw new Error('Failed to update customer.');
     }
 
@@ -111,13 +89,10 @@ export async function updateCustomer(id: string, formData: FormData) {
 }
 
 export async function deleteCustomer(id: string) {
-
     try {
         const res = await axios.delete(`Next/deleteCustomer/${id}`);
-        console.log('deleted successfully');
     } catch (error: any) {
-        console.log('error: ' + error.message)
-        //console.error('Database Error:', error);
         throw new Error('Failed to delete customer.');
-    } revalidatePath('/dashboard/customers');
+    }
+    revalidatePath('/dashboard/customers');
 }
